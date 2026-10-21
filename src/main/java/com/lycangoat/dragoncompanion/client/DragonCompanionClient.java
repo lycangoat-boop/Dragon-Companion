@@ -1,10 +1,8 @@
 package com.lycangoat.dragoncompanion.client;
 
 import com.lycangoat.dragoncompanion.DragonCompanion;
-import net.minecraft.client.model.PigModel;
-import net.minecraft.client.model.geom.ModelLayers;
-import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -16,16 +14,18 @@ public final class DragonCompanionClient {
     private DragonCompanionClient() {}
 
     @SubscribeEvent
-    public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(DragonCompanion.DRAGON.get(), DragonCompanionClient::createPlaceholderRenderer);
+    public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        event.registerLayerDefinition(DragonModel.LAYER, DragonModel::createBodyLayer);
     }
 
-    private static MobRenderer createPlaceholderRenderer(EntityRendererProvider.Context context) {
-        return new MobRenderer(context, new PigModel(context.bakeLayer(ModelLayers.PIG)), 0.7F) {
-            @Override
-            public ResourceLocation getTextureLocation(net.minecraft.world.entity.Entity entity) {
-                return new ResourceLocation("minecraft", "textures/entity/pig/pig.png");
-            }
-        };
+    @SubscribeEvent
+    public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerEntityRenderer(DragonCompanion.DRAGON.get(), context ->
+                new MobRenderer<>(context, new DragonModel(context.bakeLayer(DragonModel.LAYER)), 0.8F) {
+                    @Override
+                    public ResourceLocation getTextureLocation(com.lycangoat.dragoncompanion.entity.DragonCompanionEntity entity) {
+                        return new ResourceLocation(DragonCompanion.MOD_ID, "textures/entity/dragon.png");
+                    }
+                });
     }
 }
