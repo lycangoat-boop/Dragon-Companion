@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " G ",
+    "SES",
+    " S "
+  ],
+  "key": {
+    "G": { "item": "minecraft:gold_ingot" },
+    "S": { "item": "minecraft:stick" },
+    "E": { "item": "minecraft:echo_shard" }
+  },
+  "result": {
+    "item": "dragon_companion:dragon_whistle"
+  }
+}
